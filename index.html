@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking with Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+        .ranking-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .rank-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 250px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .rank-card:hover {
+            transform: translateY(-10px);
+        }
+        .rank-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        .rank-card h3 {
+            margin: 10px 0;
+            color: #007bff;
+        }
+        .rank-card p {
+            color: #555;
+        }
+        .rank-tag {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ranking with Images</h1>
+
+    <div class="ranking-container" id="ranking-container">
+        <!-- এখানে ডেটা লোড হবে -->
+    </div>
+
+    <script>
+        // Google Sheets API থেকে ডেটা ফেচ করার ফাংশন
+        function loadRankingData() {
+            const sheetId = "12vn4eNjbNu3S91pF_Q-KyvTRlcEB4Gxmv4PCO3LysRM";  // তোমার Google Sheet ID এখানে বসাও
+            const range = "Sheet1!A2:D"; // তোমার শিটের রেঞ্জ এখানে বসাও
+
+            // Google Sheets API থেকে ডেটা ফেচ করা
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=AIzaSyDFwX0FkvILpL_tCJhS6eWyrQ2NeJFBdCE`)
+                .then(response => response.json())
+                .then(data => {
+                    const rows = data.values;
+                    let rankingHtml = '';
+
+                    // প্রতিটি রো (row) এর জন্য র‍্যাঙ্কিং কার্ড তৈরি করা
+                    rows.forEach(row => {
+                        const name = row[0];  // প্রথম কলামে নাম
+                        const votes = row[1]; // দ্বিতীয় কলামে ভোট সংখ্যা
+                        const rank = row[2];  // তৃতীয় কলামে র‍্যাঙ্ক
+                        const imageUrl = row[3]; // চতুর্থ কলামে ছবি URL
+
+                        // র‍্যাঙ্কিং কার্ড HTML তৈরি
+                        rankingHtml += `
+                            <div class="rank-card">
+                                <img src="${imageUrl}" alt="${name}">
+                                <h3>${name}</h3>
+                                <p>Votes: ${votes}</p>
+                                <p>Rank: ${rank}</p>
+                                <span class="rank-tag">চাপরি</span>
+                            </div>
+                        `;
+                    });
+
+                    // সব র‍্যাঙ্কিং কার্ড একটি ডিভ-এ যুক্ত করা
+                    document.getElementById('ranking-container').innerHTML = rankingHtml;
+                })
+                .catch(error => console.error("Error loading data from Google Sheets: ", error));
+        }
+
+        // পেজ লোড হলে ডেটা লোড করা হবে
+        window.onload = loadRankingData;
+    </script>
+
+</body>
+</html>
