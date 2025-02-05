@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapri.com</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Chapri.com</h1>
+        <div>
+            <button class="category-btn" onclick="loadCategory('category1')">Category 1</button>
+            <button class="category-btn" onclick="loadCategory('category2')">Category 2</button>
+            <button class="category-btn" onclick="loadCategory('category3')">Category 3</button>
+            <button class="category-btn" onclick="loadCategory('category4')">Category 4</button>
+            <button class="category-btn" onclick="loadCategory('category5')">Category 5</button>
+        </div>
+    </header>
+
+    <div id="loading">Loading...</div>
+
+    <div id="content-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
